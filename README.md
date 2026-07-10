@@ -2,7 +2,7 @@
   <img src="docs/images/logo.png" alt="CivicGrid AI Logo" width="600">
 </p>
 
-<h1 align="center">CivicGrid AI</h1>
+<h2 align="center">Indraprastha International School</h2>
 <p align="center">
   <strong>Predicting Power, Optimizing Impact.</strong>
 </p>
