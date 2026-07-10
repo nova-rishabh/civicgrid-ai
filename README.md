@@ -38,7 +38,7 @@ Modern urban microgrids utilize renewable energy (solar panels) and kinetic ener
 This section is designed to help you download, run, and test the CivicGrid AI software prototype in under 2 minutes.
 
 ### Step 1: Download & Open
-1. **Download the code**: Either run `[https://github.com/nova-rishabh/civicgrid-ai.git]` or [download the project as a ZIP file from GitHub and extract it.](https://www.youtube.com/watch?v=lw3bszX6ta8)
+1. **Download the code**: Either run `git clone https://github.com/nova-rishabh/civicgrid-ai.git` or [download the project as a ZIP file from GitHub and extract it.](https://www.youtube.com/watch?v=lw3bszX6ta8)
 2. **Open the project folder**: Open the extracted folder on your computer.
 
 ### Step 2: Run the Application
