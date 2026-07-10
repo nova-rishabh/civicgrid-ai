@@ -1,0 +1,2 @@
+hour_of_day,solar_irradiance,footfall_count,temperature,is_weekend,demand_multiplier
+18,900,450,34,0,1.75

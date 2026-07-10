@@ -1,0 +1,119 @@
+{
+  "app": {
+    "name": "CivicGrid AI",
+    "tagline": "Predicting Power, Optimizing Impact.",
+    "page_icon": "CG",
+    "team": "Indraprastha International School, The Optimizers: Maayukh, Class IX and Sherayansh, Class X.",
+    "problem_statement": "Civic microgrids that blend solar, piezoelectric footfall tiles, and backup energy can waste scarce power when every load receives an equal cut. CivicGrid AI predicts the available kWh for the next hour and sends that value directly into a linear program that protects critical loads first.",
+    "pages": [
+      "Home",
+      "Data & Prediction",
+      "Optimization",
+      "Results & Impact",
+      "Mathematics & About"
+    ],
+    "default_scenario": "Demo",
+    "presentation_scenario": "Demo",
+    "download_filename": "civicgrid_allocation_results.csv"
+  },
+  "theme": {
+    "navy": "#ffffff",
+    "teal": "#cc9166",
+    "emerald": "#c7c9d1",
+    "background": "#08080a",
+    "white": "#FFFFFF",
+    "text": "#e2e3e9",
+    "muted": "#9194a1",
+    "warning": "#cc9166",
+    "error": "#ef4444",
+    "grid": "#1c1d22",
+    "font_family": "Inter, Segoe UI, sans-serif",
+    "chart_height": 440,
+    "presentation_chart_height": 580,
+    "preview_rows": 30,
+    "histogram_bins": 30
+  },
+  "paths": {
+    "data_dir": "data",
+    "models_dir": "models",
+    "trained_model": "models/trained_model.joblib"
+  },
+  "data_generation": {
+    "seed": 42,
+    "rows": 500,
+    "target": "total_energy_kwh",
+    "noise_std": 1.5,
+    "clip_target_lower": 0,
+    "round_decimals": 3,
+    "intercept": 5.6,
+    "coefficients": {
+      "solar_irradiance": 0.03,
+      "footfall_count": 0.05,
+      "temperature": 0.2,
+      "is_weekend": -1.5
+    },
+    "features": [
+      {"name": "hour_of_day", "type": "int", "min": 0, "max": 23, "role": "baseline_group"},
+      {"name": "solar_irradiance", "type": "float", "min": 0, "max": 1000},
+      {"name": "footfall_count", "type": "int", "min": 0, "max": 500},
+      {"name": "temperature", "type": "float", "min": 15, "max": 45},
+      {"name": "is_weekend", "type": "binary", "min": 0, "max": 1}
+    ],
+    "scenario_scale_min_required": false
+  },
+  "model": {
+    "type": "LinearRegression",
+    "test_size": 0.2,
+    "random_state": 42,
+    "baseline_group_column": "hour_of_day"
+  },
+  "optimization": {
+    "critical_load": "emergency_lighting",
+    "solver": "PULP_CBC_CMD",
+    "round_decimals": 3
+  },
+  "loads": {
+    "emergency_lighting": {"label": "Emergency Lighting", "demand": 5.0, "priority": 5.0, "min_required": 5.0},
+    "streetlights": {"label": "Streetlights", "demand": 15.0, "priority": 4.0, "min_required": 0.0},
+    "sensors_traffic": {"label": "Sensors Traffic", "demand": 8.0, "priority": 3.0, "min_required": 0.0},
+    "charging_points": {"label": "Charging Points", "demand": 10.0, "priority": 2.0, "min_required": 0.0},
+    "info_displays": {"label": "Info Displays", "demand": 6.0, "priority": 1.0, "min_required": 0.0}
+  },
+  "scenarios": {
+    "Demo": {
+      "filename": "demo_scenario.csv",
+      "description": "Standard next-hour microgrid conditions.",
+      "features": {
+        "hour_of_day": 14,
+        "solar_irradiance": 650,
+        "footfall_count": 220,
+        "temperature": 31,
+        "is_weekend": 0
+      }
+    },
+    "High Demand": {
+      "filename": "high_demand_scenario.csv",
+      "description": "Stronger shortfall case with increased civic load demand.",
+      "features": {
+        "hour_of_day": 18,
+        "solar_irradiance": 900,
+        "footfall_count": 450,
+        "temperature": 34,
+        "is_weekend": 0
+      },
+      "demand_multiplier": 1.75
+    },
+    "Infeasible": {
+      "filename": "infeasible_scenario.csv",
+      "description": "Forces available energy below the critical minimum.",
+      "features": {
+        "hour_of_day": 2,
+        "solar_irradiance": 0,
+        "footfall_count": 10,
+        "temperature": 20,
+        "is_weekend": 1
+      },
+      "forced_predicted_energy": 3
+    }
+  }
+}
